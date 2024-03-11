@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import CardComponet from '../components/Card/Card.jsx';
+import './movies.css';
 
-export default function Movies() {
+export default function Movies(props) {
 
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState();
@@ -9,7 +10,7 @@ export default function Movies() {
 
     useEffect(() => {
         if (loading) {
-            fetch('https://api-pelis-back.onrender.com/comedia')
+            fetch(`https://api-pelis-back.onrender.com/${props.genero}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -28,12 +29,19 @@ export default function Movies() {
         return (
             <>
                 <h1 className="titulo">Welcome {data.genero}</h1>
-
-
-                {data.peliculas.map((movie, index) => {
-                    return <CardComponet key={index} titulo={movie.titulo} portada={movie.portada} text={movie.sinopsis} />
+                <div className="container">
+                <div className="row">
+                
+                {data.peliculas.map((movie, index,) => {
+                    return (
+                    <div className="col cardHover">
+                    <CardComponet key={index} titulo={movie.titulo} portada={movie.portada} sinopsis={movie.sinopsis}/></div>
+                    )
                 })}
+                        </div>
+                    </div>
             </>
+     
         );
     }
 }
